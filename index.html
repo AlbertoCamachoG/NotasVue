@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <title>a exercices</title>
+        <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <style>
+            button{
+                margin-left:20px;
+                margin-right:20px;
+            }
+            .azul{
+                background-color: cornflowerblue;
+                padding: 20px;
+                border: solid 1px;
+            }
+            .rojo{
+                background-color: red;
+                padding: 20px;
+                border: solid 1px;
+            }
+            li{
+                list-style-type: none;
+            }
+            ol{
+                padding:0;
+            }
+            .trans-item {
+                display: inline-block;
+                margin-right: 10px;
+            }
+            .trans-enter-active, .trans-leave-active {
+                transition: all 1s;
+            }
+            .trans-enter/* .list-leave-active below version 2.1.8 */ {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            .trans-leave-to {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            .cabesa{
+                background-color: antiquewhite;
+            }
+            
+        </style>
+	</head>
+	<body class="cabesa">
+        
+        <div id="miApp" >
+            <label>Titulo Nota: </label><input v-model="tituloNuevoRecordatorio"><br><br>
+            <label>Cuerpo Nota: </label><input v-on:keydown.enter="añadirRecordatorio()" v-on:keyup="teclaPulsada()" v-model="nuevoRecordatorio">
+            <br><br><button v-on:click="añadirRecordatorio()" v-bind:disabled="isDisabled">Añadir nota</button>
+            <button  v-on:click="borrarCompletadas()">Borrar Completadas</button>
+            <br><br><br>
+            <label>Buscar por titulo: </label><input v-model="filtro">
+            <p>Total de tareas: {{totalTareas}}</p>
+            <p>Total de tareas completadas: {{totalCompletadas}}</p>
+            <ol>
+                <transition-group name="trans" tag="li">
+                    <li v-for="(recordatorio,index) in listaFiltrada" v-bind:key="recordatorio.content">
+                    <div v-bind:class="{'azul':!recordatorio.done, 'rojo':recordatorio.done}"><button  v-on:click="cambiarEstado(index)">Completar</button>
+                        {{ recordatorio.titulo}} -|- {{ recordatorio.content}} -|- {{ recordatorio.date}} -|- Priority: {{recordatorio.prioridad }} 
+                        <button v-if="!recordatorio.done" v-on:click="cambiarPrioridad(index)">Prioridad</button></div>
+                    </li>
+                </transition-group>
+              </ol>
+        </div>
+        <script src="recordatorio.js"></script>
+	</body>
+</html>
